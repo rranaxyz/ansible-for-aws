@@ -1,0 +1,16 @@
+---
+- hosts: localhost
+  gather_facts: False
+#  become: False
+
+
+  pre_tasks:
+    - name: Gather VPC facts 
+      local_action: 
+        module: ec2_vpc_net_info
+        filters:
+          "tag:role": 'prod-vpc'
+      register: vpc_facts
+
+    - name: debug
+      debug: msg="{{ vpc_facts.vpcs[0].vpc_id }}"
